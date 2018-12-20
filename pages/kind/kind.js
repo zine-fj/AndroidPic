@@ -76,7 +76,7 @@ Page({
   getClass() {
     let that = this;
     wx.showLoading({
-      title: '列表加载中...',
+      title: '加载中...',
     })
     wx.request({
       url: 'http://service.picasso.adesk.com/v1/vertical/category',
@@ -96,7 +96,7 @@ Page({
     let order = this.data.order;
     let skip = this.data.skip;
     wx.showLoading({
-      title: '首页加载中...',
+      title: '加载中...',
     });
     // 初始化时获取id、num、title
     wx.request({
@@ -150,6 +150,9 @@ Page({
         skip
       })
     }
+    wx.showLoading({
+      title: '加载中...',
+    })
     wx.request({
       url: `http://service.picasso.adesk.com/v1/vertical/category/${whitch.id}/vertical?limit=10&order=${order}&skip=${skip}`,
       success(res) {
@@ -171,9 +174,6 @@ Page({
     let that = this;
     let order = this.data.order;
     let skip = this.data.skip;
-    wx.showLoading({
-      title: '上拉拼命加载中',
-    });
     // 假设每页壁纸最多 40 张
     if (countNum < limitNum) { // 当前数量 < 总数量
       that.setData({
@@ -185,6 +185,9 @@ Page({
         hasMore: false
       })
     }
+    wx.showLoading({
+      title: '加载中...',
+    });
     wx.request({
       url: `http://service.picasso.adesk.com/v1/vertical/category/${whitch.id}/vertical?limit=${countNum}&order=${order}&skip=${skip}`,
       success(res) {
@@ -201,7 +204,6 @@ Page({
     wx.setNavigationBarTitle({
       title: whitch.name
     });
-
   },
 
   /**
@@ -246,9 +248,7 @@ Page({
   //     isTypeShow: false
   //   })
   // },
-
-
-
+  
   /**
    * 生命周期函数--监听页面卸载
    */
