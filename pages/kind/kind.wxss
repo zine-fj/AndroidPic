@@ -1,0 +1,131 @@
+/**index.wxss**/
+/* 壁纸分类 */
+.pic{
+  overflow: hidden;
+}
+.pic-class{
+  position: fixed;
+  left: 0;
+  top: 0;
+  font-size: 32rpx;
+  width: 100%;
+  height: 60rpx;
+  line-height: 1;
+  border-bottom: 1rpx solid #ccc;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  padding: 10rpx;
+  z-index: 2;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.pic-class text{
+  margin-right: 20rpx;
+  font-size: 32rpx;
+  color: #000;
+}
+.pic-class .text-act{
+  color: #f00;
+}
+.pic-cont{
+  margin-top: 60rpx;
+  height: calc(100% - 60rpx);
+}
+.pic-cont image{
+  width: 48%;
+  margin: 1%;
+  display: inline-block;
+  vertical-align: top;
+  box-shadow:0 0 6rpx 0 #ccc;
+}
+
+.tips {
+  font-size: 28rpx;
+  text-align: center;
+  padding: 50rpx;
+  color: #ccc;
+}
+
+.tips image,
+.tips text {
+  vertical-align: middle;
+}
+
+.tips image {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 20rpx;
+}
+
+.tips text {
+  padding: 20rpx 40rpx;
+  color: #999;
+  font-size: 38rpx;
+  text-align: center;
+}
+.footer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.footer text{
+  font-size: 36rpx;
+  padding: 0;
+}
+.footer .skip-fenge{
+  margin: 0 10rpx;
+}
+.footer .skip{
+  margin: 0 30rpx;
+}
+/* 最新最热 */
+.new-hot {
+  position: fixed;
+  left: 0;
+  bottom: 10%;
+  display: flex;
+  width: auto;
+  height: 120rpx;
+  border: 2rpx solid red;
+  background: rgba(255, 255, 255, 0.6);
+  box-sizing: border-box;
+  border-radius: 0 50rpx 50rpx 0;
+  overflow: hidden;
+}
+.new-hot-act{
+  background: #f00;
+  color: #fff!important;
+}
+.new-hot-hide{
+  left: -166rpx;
+}
+
+.new-hot text {
+  font-size: 28rpx;
+  color: #000;
+  width: 80rpx;
+  height: 100%;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  border-right: 2rpx solid #f00;
+}
+
+.new-hot .other {
+  display: inline-flex;
+  width: 80rpx;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.new-hot .other image {
+  width: 40rpx;
+  height: 40rpx;
+}
+/* 小箭头 */
+.arrow{
+  transform: rotate(180deg)
+}
