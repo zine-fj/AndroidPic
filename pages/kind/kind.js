@@ -5,11 +5,13 @@ Page({
    * 页面的初始数据
    */
   data: {
+    arrowRight: 'https://agent-app-1255417960.cos-website.ap-beijing.myqcloud.com/images/sprogress/IterationYfb/enter.png',
     picLass: [],
     textId: 0,
     imgClass: [],
     title: '',
     order: 'new', // 壁纸类型默认为 hot，还有一种 new
+    newHot: '新',
     skip: 0, // 默认为0，最大应该为5000
     skipNum: 5000,
     countNum: 10, // 每页壁纸数量
@@ -17,32 +19,26 @@ Page({
     scrollTop: 0,
     isHeaderShow: false, // 头部是否显示
     hasMore: false,
-    isTypeShow: true,
+    x: 100,
+    y: 100,
   },
   // 点击最新或最热
-  newHot(e) {
-    let that = this;
+  newHot() {
+    let self = this;
     let order = this.data.order;
-    let theNew = e.currentTarget.dataset.type;
-    let theHot = e.currentTarget.dataset.type;
-    if (theNew == 'new') {
-      that.setData({
-        order: 'new'
+    if(order == 'new') {
+      self.setData({
+        order: 'hot',
+        newHot: '热'
       })
-    } else if (theHot == 'hot') {
-      that.setData({
-        order: 'hot'
+    } else {
+      self.setData({
+        order: 'new',
+        newHot: '新'
       })
     }
     this.getPic(whitch);
     this.goTop();
-  },
-
-  // 点击最新最热右边小箭头
-  newHotShow() {
-    this.setData({
-      isTypeShow: !this.data.isTypeShow
-    })
   },
 
   /**
@@ -50,7 +46,12 @@ Page({
    */
   onLoad: function(options) {
     whitch = options;
+    console.log(whitch)
     this.getClass();
+    wx.setNavigationBarColor({
+      frontColor: '#ffffff',
+      backgroundColor: '#f05b72',
+    })
   },
   // 点击查看图片
   lookPic(e) {
@@ -91,6 +92,7 @@ Page({
   },
   // 获取图片
   getPic(whitch) {
+    console.log(whitch)
     let that = this;
     let title = this.data.title;
     let order = this.data.order;
@@ -102,6 +104,15 @@ Page({
     wx.request({
       url: `http://service.picasso.adesk.com/v1/vertical/category/${whitch.id}/vertical?limit=10&order=${order}&skip=0`,
       success(res) {
+        console.log(res)
+        let idCount = wx.getStorageSync('idCount');
+        idCount.forEach((item,index)=>{
+          if(whitch.id == item.id) {
+            that.setData({
+              skipNum: item.count
+            })
+          }
+        })
         wx.hideLoading();
         wx.stopPullDownRefresh();
         that.setData({
@@ -121,7 +132,7 @@ Page({
     let that = this;
     whitch = e.currentTarget.dataset;
     this.getPic(whitch);
-    this.goTop();
+    // this.goTop();
   },
   // 点击上一页或下一页
   clickMore(e) {
@@ -132,6 +143,7 @@ Page({
     let skipNum = this.data.skipNum;
 
     if (state == 'right') {
+      console.log(skip,skipNum)
       if (skip < skipNum) {
         skip += 40;
       } else {
@@ -241,13 +253,6 @@ Page({
   onHide: function() {
 
   },
-
-  // 监听页面滚动
-  // onPageScroll() {
-  //   this.setData({
-  //     isTypeShow: false
-  //   })
-  // },
   
   /**
    * 生命周期函数--监听页面卸载

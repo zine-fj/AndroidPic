@@ -1,39 +1,38 @@
 <!--pages/kind/kind.wxml-->
-<view class='pic'>
-  <!-- 分类 -->
-  <scroll-view class='pic-class' scroll-x hidden="{{isHeaderShow}}">
-    <text wx:for="{{picLass}}" wx:key="{{index}}" data-num="{{index}}" data-id="{{item.id}}" data-name="{{item.name}}" bindtap='textClick' class="{{textId==index?'text-act':''}}">{{item.name}}</text>
-  </scroll-view>
-  <!-- 图片 -->
-  <scroll-view scroll-y class='pic-cont'>
-    <image lazy-load bindload='onLazyLoad' mode='widthFix' wx:for="{{imgClass}}" wx:key="{{index}}" src='{{item.img}}' data-imgs="{{imgClass}}" data-src="{{item.preview}}" bindtap='lookPic' />
-  </scroll-view>
+<movable-area>
 
-  <!-- 最新最热 -->
-  <view class="new-hot {{isTypeShow?'':'new-hot-hide'}}">
-    <text class="new {{order == 'new'?'new-hot-act':''}}" bindtap='newHot' data-type='new'>最新</text>
-    <text class="hot {{order == 'hot'?'new-hot-act':''}}" bindtap='newHot' data-type='hot'>最热</text>
-    <view class='other' bindtap='newHotShow'>
-      <image mode='aspectFit' class="{{isTypeShow?'arrow':''}}" src='https://agent-app-1255417960.cos-website.ap-beijing.myqcloud.com/images/sprogress/IterationYfb/enter.png' />
-    </view>
-  </view>
-  
-  <!-- 底部 -->
-  <view class='tips'>
-    <view wx:if="{{hasMore}}">
-      <image src="/images/loading.gif" mode="aspectFill" />
-      <text>拼命加载中...</text>
-    </view>
-    <view wx:else>
-      <view class='footer'>
-        <text bindtap='clickMore' data-state='left'>Left</text>
-        <view class='skip'>
-          <text>{{skip/40}}</text>
-          <text class='skip-fenge'>/</text>
-          <text>{{skipNum/40}}</text>
+  <view class='pic'>
+    <!-- 分类 -->
+    <scroll-view class='pic-class' scroll-x hidden="{{isHeaderShow}}">
+      <text wx:for="{{picLass}}" wx:key="{{index}}" data-num="{{index}}" data-id="{{item.id}}" data-name="{{item.name}}" bindtap='textClick' class="{{textId==index?'text-act':''}}">{{item.name}}</text>
+    </scroll-view>
+    <!-- 图片 -->
+    <scroll-view scroll-y class='pic-cont'>
+      <image lazy-load mode='widthFix' wx:for="{{imgClass}}" wx:key="{{index}}" src='{{item.img}}' data-imgs="{{imgClass}}" data-src="{{item.preview}}" bindtap='lookPic' />
+    </scroll-view>
+
+    <!-- 最新最热 -->
+    <movable-view direction="all" x="{{x}}" y="{{y}}">
+      <text bindtap='newHot' class="{{order == 'hot'?'new-hot-act':''}}">{{newHot}}</text>
+    </movable-view>
+
+    <!-- 底部 -->
+    <view class='tips'>
+      <view wx:if="{{hasMore}}">
+        <image src="/images/loading.gif" mode="aspectFill" />
+        <text>努力加载中...</text>
+      </view>
+      <view wx:else>
+        <view class='footer'>
+          <text bindtap='clickMore' data-state='left'>上一页</text>
+          <view class='skip'>
+            <text>{{skip/40}}</text>
+            <text class='skip-fenge'>/</text>
+            <text>{{skipNum/40}}</text>
+          </view>
+          <text bindtap='clickMore' data-state='right'>下一页</text>
         </view>
-        <text bindtap='clickMore' data-state='right'>Right</text>
       </view>
     </view>
   </view>
-</view>
+</movable-area>

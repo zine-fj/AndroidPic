@@ -1,7 +1,43 @@
 /**index.wxss**/
 /* 壁纸分类 */
+page {
+  width: 100%;
+  height: 100%;
+}
 .pic{
   overflow: hidden;
+}
+movable-area {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+movable-view {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 80rpx;
+  height: 80rpx;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  border-radius: 50%;
+  background: rgba(255,255,255,.6);
+  box-shadow: 0 0 20rpx #ddd;
+  
+}
+movable-view text {
+  font-size: 32rpx;
+  color: #7fb80e;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+movable-view .new-hot-act {
+  color: #f00;
 }
 .pic-class{
   position: fixed;
@@ -11,19 +47,20 @@
   width: 100%;
   height: 60rpx;
   line-height: 1;
-  border-bottom: 1rpx solid #ccc;
   display: flex;
   align-items: center;
   white-space: nowrap;
   padding: 10rpx;
   z-index: 2;
   overflow: hidden;
+  box-shadow: 0 0 10rpx #ddd;
+  background: rgba(255,255,255,.4);
   box-sizing: border-box;
 }
 .pic-class text{
   margin-right: 20rpx;
-  font-size: 32rpx;
-  color: #000;
+  font-size: 28rpx;
+  color: #444;
 }
 .pic-class .text-act{
   color: #f00;
@@ -35,6 +72,7 @@
 .pic-cont image{
   width: 48%;
   margin: 1%;
+  min-height: 600rpx;
   display: inline-block;
   vertical-align: top;
   box-shadow:0 0 6rpx 0 #ccc;
@@ -43,7 +81,7 @@
 .tips {
   font-size: 28rpx;
   text-align: center;
-  padding: 50rpx;
+  padding: 20rpx;
   color: #ccc;
 }
 
@@ -78,54 +116,4 @@
 }
 .footer .skip{
   margin: 0 30rpx;
-}
-/* 最新最热 */
-.new-hot {
-  position: fixed;
-  left: 0;
-  bottom: 10%;
-  display: flex;
-  width: auto;
-  height: 120rpx;
-  border: 2rpx solid red;
-  background: rgba(255, 255, 255, 0.6);
-  box-sizing: border-box;
-  border-radius: 0 50rpx 50rpx 0;
-  overflow: hidden;
-}
-.new-hot-act{
-  background: #f00;
-  color: #fff!important;
-}
-.new-hot-hide{
-  left: -166rpx;
-}
-
-.new-hot text {
-  font-size: 28rpx;
-  color: #000;
-  width: 80rpx;
-  height: 100%;
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-  border-right: 2rpx solid #f00;
-}
-
-.new-hot .other {
-  display: inline-flex;
-  width: 80rpx;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-}
-
-.new-hot .other image {
-  width: 40rpx;
-  height: 40rpx;
-}
-/* 小箭头 */
-.arrow{
-  transform: rotate(180deg)
 }

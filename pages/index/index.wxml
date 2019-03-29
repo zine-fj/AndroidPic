@@ -4,7 +4,8 @@
   bindtap='clickLi'
   data-id='{{item.id}}'
   data-num='{{index}}'
-  data-name='{{item.name}}'
+  data-name='{{item.name}}' 
+  data-count='{{item.count}}'
   wx:key="{{index}}" class='pic-li' style="width:{{picW}}px;height: {{picH}}px">
     <image mode='scaleToFill' class='pic-li-img' src='{{item.cover}}'></image>
     <text class='pic-li-word'>{{item.name}}</text>

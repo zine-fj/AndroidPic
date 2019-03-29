@@ -16,6 +16,10 @@ Page({
   onLoad: function (options) {
     this.getSystemInfo();
     this.getClass();
+    wx.setNavigationBarColor({
+      frontColor: '#ffffff',
+      backgroundColor: '#f05b72',
+    })
   },
   // 获取手机信息
   getSystemInfo() {
@@ -55,6 +59,18 @@ Page({
         wx.hideLoading();
         wx.stopPullDownRefresh();
         let _picLass = res.data.res.category;
+        console.log(_picLass)
+        let setArr = []
+        _picLass.forEach((item,index)=>{
+          setArr.push({
+            id: item.id,
+            count: item.count
+          })
+        });
+        wx.setStorage({
+          key: 'idCount',
+          data: setArr,
+        })
         that.setData({
           picLass: _picLass,
         });
@@ -73,11 +89,13 @@ Page({
   // 点击单个
   clickLi(e) {
     console.log(e)
-    let id = e.currentTarget.dataset.id;
-    let num = e.currentTarget.dataset.num;
-    let name = e.currentTarget.dataset.name;
+    let ecd = e.currentTarget.dataset;
+    let id = ecd.id;
+    let num = ecd.num;
+    let name = ecd.name;
+    let count = ecd.count;
     wx.navigateTo({
-      url: `/pages/kind/kind?id=${id}&num=${num}&name=${name}`,
+      url: `/pages/kind/kind?id=${id}&num=${num}&name=${name}&count=${count}`,
     })
   },
 
