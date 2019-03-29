@@ -99,4 +99,26 @@ Page({
     })
   },
 
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+    let _path = '/pages/index/index';
+    return {
+      title: '手机壁纸',
+      path: _path,
+      success: function (res) {
+        // 转发成功
+        wx.showToast({
+          title: "转发成功",
+          icon: 'success',
+          duration: 2000
+        })
+      },
+      fail: function (res) {
+        // 转发失败
+      }
+    }
+  }
+
 })
