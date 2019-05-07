@@ -16,9 +16,9 @@ http://service.picasso.adesk.com/v1/vertical/category/${id}/vertical?order=new
 ```
 4、壁纸中每页数量数量：limit 一般为 30 个：
 ```shell
-http://service.picasso.adesk.com/v1/vertical/category/4e4d610cdf714d2966000003/vertical?limit=10
+http://service.picasso.adesk.com/v1/vertical/category/${id}/vertical?limit=10
 ```
 5、skip 为省略前多少张壁纸，逻辑：在分类中获取的每个分类中壁纸总数量 / 每页壁纸数量 = 需要多少页：
 ```shell
-http://service.picasso.adesk.com/v1/vertical/category/4e4d610cdf714d2966000003/vertical?limit=10&order=new&skip=1
+http://service.picasso.adesk.com/v1/vertical/category/${id}/vertical?limit=10&order=new&skip=1
 ```
