@@ -14,8 +14,8 @@ movable-area {
 }
 movable-view {
   position: fixed;
-  left: 0;
-  top: 0;
+  left: 30rpx;
+  top: 50rpx;
   width: 80rpx;
   height: 80rpx;
   display: inline-flex;

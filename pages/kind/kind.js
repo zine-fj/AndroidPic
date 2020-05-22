@@ -1,10 +1,12 @@
 let whitch;
+let app = getApp();
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    appUrl: app.globalData.appUrl,
     arrowRight: 'https://agent-app-1255417960.cos-website.ap-beijing.myqcloud.com/images/sprogress/IterationYfb/enter.png',
     picLass: [],
     textId: 0,
@@ -80,7 +82,7 @@ Page({
       title: '加载中...',
     })
     wx.request({
-      url: 'http://service.picasso.adesk.com/v1/vertical/category',
+      url: `${this.data.appUrl}/v1/vertical/category`,
       success(res) {
         wx.hideLoading();
         let _picLass = res.data.res.category;
@@ -102,7 +104,7 @@ Page({
     });
     // 初始化时获取id、num、title
     wx.request({
-      url: `http://service.picasso.adesk.com/v1/vertical/category/${whitch.id}/vertical?limit=10&order=${order}&skip=0`,
+      url: `${this.data.appUrl}/v1/vertical/category/${whitch.id}/vertical?limit=10&order=${order}&skip=0`,
       success(res) {
         console.log(res)
         let idCount = wx.getStorageSync('idCount');
@@ -132,7 +134,7 @@ Page({
     let that = this;
     whitch = e.currentTarget.dataset;
     this.getPic(whitch);
-    // this.goTop();
+    this.goTop();
   },
   // 点击上一页或下一页
   clickMore(e) {
@@ -166,7 +168,7 @@ Page({
       title: '加载中...',
     })
     wx.request({
-      url: `http://service.picasso.adesk.com/v1/vertical/category/${whitch.id}/vertical?limit=10&order=${order}&skip=${skip}`,
+      url: `${this.data.appUrl}/v1/vertical/category/${whitch.id}/vertical?limit=10&order=${order}&skip=${skip}`,
       success(res) {
         wx.hideLoading();
         that.setData({
@@ -201,7 +203,7 @@ Page({
       title: '加载中...',
     });
     wx.request({
-      url: `http://service.picasso.adesk.com/v1/vertical/category/${whitch.id}/vertical?limit=${countNum}&order=${order}&skip=${skip}`,
+      url: `${this.data.appUrl}/v1/vertical/category/${whitch.id}/vertical?limit=${countNum}&order=${order}&skip=${skip}`,
       success(res) {
         wx.hideLoading();
         that.setData({

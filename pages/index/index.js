@@ -1,5 +1,6 @@
 let screenW;
 let screenH;
+let app = getApp();
 Page({
   /**
    * 页面的初始数据
@@ -8,6 +9,8 @@ Page({
     picLass: [],
     picW: 0, // 图片显示宽
     picH: 0, // 图片显示高
+    appUrl: app.globalData.appUrl,
+    thePhpUrl: app.globalData.thePhpUrl,
   },
 
   /**
@@ -49,12 +52,13 @@ Page({
     let that = this;
     let picW = this.data.picW;
     let picH = this.data.picH;
-   
+    let appUrl = this.data.appUrl;
+    let thePhpUrl = this.data.thePhpUrl;
     wx.showLoading({
       title: '加载中...',
     })
     wx.request({
-      url: 'http://service.picasso.adesk.com/v1/vertical/category',
+      url: `${appUrl}/v1/vertical/category`,
       success(res) {
         wx.hideLoading();
         wx.stopPullDownRefresh();
@@ -62,9 +66,11 @@ Page({
         console.log(_picLass)
         let setArr = []
         _picLass.forEach((item,index)=>{
+          item.cover = `${thePhpUrl}${item.cover}`
           setArr.push({
             id: item.id,
-            count: item.count
+            count: item.count,
+            cover: `${thePhpUrl}${item.cover}`
           })
         });
         wx.setStorage({
