@@ -13,24 +13,21 @@
 
     <!-- 最新最热 -->
     <movable-view direction="all" x="{{x}}" y="{{y}}">
-      <text bindtap='newHot' class="{{order == 'hot'?'new-hot-act':''}}">{{newHot}}</text>
+      <text bindtap='bindNewHot' class="{{order == 'hot'?'new-hot-act':''}}">{{order == 'hot'?'热':'新'}}</text>
     </movable-view>
 
     <!-- 底部 -->
     <view class='tips'>
-      <view wx:if="{{hasMore}}">
-        <image src="/images/loading.gif" mode="aspectFill" />
-        <text>努力加载中...</text>
-      </view>
-      <view wx:else>
+      <view class="end">END</view>
+      <view>
         <view class='footer'>
-          <text bindtap='clickMore' data-state='left'>上一页</text>
+          <text bindtap='bindMorePic' data-state='left'>上一页</text>
           <view class='skip'>
-            <text>{{skip/40}}</text>
+            <input bindblur="bindBlur" data-num="{{skip/limitNum}}" value="{{skip/limitNum}}"></input>
             <text class='skip-fenge'>/</text>
-            <text>{{skipNum/40}}</text>
+            <text>{{skipNumSkip}}</text>
           </view>
-          <text bindtap='clickMore' data-state='right'>下一页</text>
+          <text bindtap='bindMorePic' data-state='right'>下一页</text>
         </view>
       </view>
     </view>

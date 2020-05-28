@@ -1,34 +1,40 @@
 /**index.wxss**/
+
 /* 壁纸分类 */
+
 page {
   width: 100%;
   height: 100%;
+  box-sizing: border-box;
 }
-.pic{
+
+.pic {
   overflow: hidden;
 }
+
 movable-area {
   width: 100%;
   height: 100%;
   position: relative;
 }
+
 movable-view {
   position: fixed;
   left: 30rpx;
   top: 50rpx;
-  width: 80rpx;
-  height: 80rpx;
+  width: 100rpx;
+  height: 100rpx;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   z-index: 100;
   border-radius: 50%;
-  background: rgba(255,255,255,.6);
+  background: rgba(255, 255, 255, 0.6);
   box-shadow: 0 0 20rpx #ddd;
-  
 }
+
 movable-view text {
-  font-size: 32rpx;
+  font-size: 34rpx;
   color: #7fb80e;
   display: inline-flex;
   align-items: center;
@@ -36,57 +42,68 @@ movable-view text {
   width: 100%;
   height: 100%;
 }
+
 movable-view .new-hot-act {
   color: #f00;
 }
-.pic-class{
+
+.pic-class {
   position: fixed;
   left: 0;
   top: 0;
   font-size: 32rpx;
   width: 100%;
-  height: 60rpx;
+  height: 80rpx;
   line-height: 1;
   display: flex;
   align-items: center;
   white-space: nowrap;
-  padding: 10rpx;
+  padding: 20rpx;
   z-index: 2;
   overflow: hidden;
   box-shadow: 0 0 10rpx #ddd;
-  background: rgba(255,255,255,.4);
+  background: rgba(255, 255, 255, 0.4);
   box-sizing: border-box;
 }
-.pic-class text{
+
+.pic-class text {
   margin-right: 20rpx;
   font-size: 28rpx;
   color: #444;
 }
-.pic-class .text-act{
+
+.pic-class .text-act {
   color: #f00;
 }
-.pic-cont{
-  margin-top: 60rpx;
-  height: calc(100% - 60rpx);
+
+.pic-cont {
+  margin-top: 80rpx;
+  height: calc(100% - 100rpx);
 }
-.pic-cont image{
-  width: 48%;
+
+.pic-cont image {
+  width: 31%;
   margin: 1%;
-  min-height: 600rpx;
+  min-height: 240rpx;
   display: inline-block;
   vertical-align: top;
-  box-shadow:0 0 6rpx 0 #ccc;
+  box-shadow: 0 0 6rpx 0 #ccc;
 }
 
 .tips {
   font-size: 28rpx;
   text-align: center;
-  padding: 20rpx;
   color: #ccc;
 }
 
-.tips image,
-.tips text {
+.tips .end {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 40rpx 0;
+}
+
+.tips image, .tips text {
   vertical-align: middle;
 }
 
@@ -102,18 +119,39 @@ movable-view .new-hot-act {
   font-size: 38rpx;
   text-align: center;
 }
-.footer{
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: calc(100% - 60rpx);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 20rpx 30rpx;
+  background: rgba(0, 0, 0, 0.3);
 }
-.footer text{
+
+.footer text {
   font-size: 36rpx;
   padding: 0;
+  color: #fff;
 }
-.footer .skip-fenge{
+
+.footer .skip-fenge {
   margin: 0 10rpx;
 }
-.footer .skip{
+
+.footer .skip {
+  display: flex;
+  align-items: center;
   margin: 0 30rpx;
+}
+
+.footer .skip input {
+  width: 90rpx;
+  height: 30rpx;
+  border: 1rpx solid #fff;
+  display: inline-block;
+  flex: none;
 }

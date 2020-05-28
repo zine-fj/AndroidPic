@@ -45,7 +45,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh() {
-    this.getClass();
+    // this.getClass();
   },
   // 获取图片类别
   getClass() {
@@ -58,10 +58,9 @@ Page({
       title: '加载中...',
     })
     wx.request({
-      url: `${appUrl}/v1/vertical/category`,
+      url: `${thePhpUrl}${appUrl}/v1/vertical/category`,
       success(res) {
         wx.hideLoading();
-        wx.stopPullDownRefresh();
         let _picLass = res.data.res.category;
         console.log(_picLass)
         let setArr = []
@@ -70,7 +69,7 @@ Page({
           setArr.push({
             id: item.id,
             count: item.count,
-            cover: `${thePhpUrl}${item.cover}`
+            cover: `${item.cover}`
           })
         });
         wx.setStorage({

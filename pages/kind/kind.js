@@ -6,40 +6,30 @@ Page({
    * 页面的初始数据
    */
   data: {
+    thePhpUrl: app.globalData.thePhpUrl,
     appUrl: app.globalData.appUrl,
     arrowRight: 'https://agent-app-1255417960.cos-website.ap-beijing.myqcloud.com/images/sprogress/IterationYfb/enter.png',
     picLass: [],
     textId: 0,
     imgClass: [],
-    title: '',
+    picListLiNums: app.globalData.picListLiNums, // 图片数量
     order: 'new', // 壁纸类型默认为 hot，还有一种 new
-    newHot: '新',
-    skip: 0, // 默认为0，最大应该为5000
-    skipNum: 5000,
-    countNum: 10, // 每页壁纸数量
-    limitNum: 40, // 默认每页最多有40张
+    skip: 0, // 默认为0,略过前面图片数量
+    skipNumSkip: 100, // 图片数量/略过数量=页数
+    limitNum: 45, // 默认每页最多有45张
     scrollTop: 0,
     isHeaderShow: false, // 头部是否显示
-    hasMore: false,
     x: 100,
     y: 100,
   },
   // 点击最新或最热
-  newHot() {
-    let self = this;
+  bindNewHot() {
     let order = this.data.order;
-    if(order == 'new') {
-      self.setData({
-        order: 'hot',
-        newHot: '热'
-      })
-    } else {
-      self.setData({
-        order: 'new',
-        newHot: '新'
-      })
-    }
-    this.getPic(whitch);
+    let _order = order == 'new' ? 'hot' : 'new';
+    this.setData({
+      order: _order,
+    })
+    this.getPic(whitch, _order);
     this.goTop();
   },
 
@@ -47,6 +37,12 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    // let arr = {
+    //   id: "4e4d610cdf714d2966000000",
+    //   name: "美女",
+    //   num: "0"
+    // }
+    // whitch = arr;
     whitch = options;
     console.log(whitch)
     this.getClass();
@@ -68,11 +64,6 @@ Page({
       current: src, // 当前显示图片的http链接
       urls: imgUrls, // 需要预览的图片http链接列表
     })
-    // wx.saveImageToPhotosAlbum({
-    //   filePath: src,
-    //   success: function(fres) {
-    //   }
-    // })
   },
 
   // 获取图片类别 用于头部
@@ -92,36 +83,62 @@ Page({
       }
     })
   },
+  // 图片加载完毕
+  onImageLoad(e) {
+    console.log(e)
+  },
   // 获取图片
-  getPic(whitch) {
-    console.log(whitch)
+  getPic(whitch, order) {
     let that = this;
-    let title = this.data.title;
-    let order = this.data.order;
-    let skip = this.data.skip;
+    let appUrl = this.data.appUrl;
+    let thePhpUrl = this.data.thePhpUrl;
+    let skip = 0;
+    let limitNum = this.data.limitNum;
+    let picListLiNums = this.data.picListLiNums;
     wx.showLoading({
       title: '加载中...',
     });
     // 初始化时获取id、num、title
+    let _url = `${appUrl}/v1/vertical/category/${whitch.id}/vertical?limit=${limitNum}&order=${order}&skip=${skip}`;
     wx.request({
-      url: `${this.data.appUrl}/v1/vertical/category/${whitch.id}/vertical?limit=10&order=${order}&skip=0`,
+      url: _url,
       success(res) {
         console.log(res)
         let idCount = wx.getStorageSync('idCount');
-        idCount.forEach((item,index)=>{
-          if(whitch.id == item.id) {
-            that.setData({
-              skipNum: item.count
-            })
+        idCount.forEach((item, index) => {
+          if (whitch.id == item.id) {
+            console.log('-----------: ', item.id, item.count)
           }
+          picListLiNums.forEach((pic,picIn)=>{
+            if (whitch.name == pic.rname) {
+              let _skipNumSkip = 0;
+              if (order == 'new') {
+                if (pic.new < limitNum) {
+                  _skipNumSkip = 0
+                } else {
+                  _skipNumSkip = Math.ceil(pic.new / limitNum)
+                }
+              } else if(order == 'hot') {
+                if (pic.hot < limitNum) {
+                  _skipNumSkip = 0
+                } else {
+                  _skipNumSkip = Math.ceil(pic.hot / limitNum)
+                }
+              }
+              console.log(_skipNumSkip)
+              that.setData({
+                skipNumSkip: _skipNumSkip,
+              })
+            }
+          })
+          
         })
         wx.hideLoading();
-        wx.stopPullDownRefresh();
         that.setData({
           imgClass: res.data.res.vertical,
           textId: whitch.num,
-          countNum: 10,
-          skip: 0
+          limitNum: 45,
+          skip: 0,
         });
         wx.setNavigationBarTitle({
           title: whitch.name
@@ -133,32 +150,66 @@ Page({
   textClick(e) {
     let that = this;
     whitch = e.currentTarget.dataset;
-    this.getPic(whitch);
+    let order = this.data.order;
+    this.getPic(whitch, order);
     this.goTop();
   },
   // 点击上一页或下一页
-  clickMore(e) {
+  bindMorePic(e) {
     let state = e.currentTarget.dataset.state;
     let that = this;
     let skip = this.data.skip;
     let order = this.data.order;
-    let skipNum = this.data.skipNum;
+    let picListLiNums = this.data.picListLiNums;
+    let limitNum = this.data.limitNum;
+    let _skipNum = 0;
+    picListLiNums.forEach((pic, picIn) => {
+      if (whitch.name == pic.rname) {
+        if (order == 'new') {
+          _skipNum = pic.new
+        } else if (order == 'hot') {
+          _skipNum = pic.hot
+        }
+        
+      }
+    })
+
+    let onePage = false;
+    if (_skipNum > limitNum) {
+      onePage = false;
+      _skipNum = _skipNum - (_skipNum % limitNum) + limitNum
+    } else { // 就一页
+      onePage = true;
+      _skipNum = limitNum;
+      skip = limitNum;
+    }
+    
 
     if (state == 'right') {
-      console.log(skip,skipNum)
-      if (skip < skipNum) {
-        skip += 40;
+      if (skip < _skipNum) {
+        skip += limitNum;
       } else {
-        skip = skipNum
+        skip = _skipNum;
+        wx.showToast({
+          icon: 'none',
+          title: '已经是所有图片啦~',
+        })
+        return
       }
+      console.log(skip,_skipNum)
       that.setData({
         skip
       })
     } else if (state == 'left') {
-      if (skip > 40) {
-        skip -= 40;
+      if (skip >= limitNum && !onePage) {
+        skip -= limitNum;
       } else {
-        skip = 0
+        skip = 0;
+        wx.showToast({
+          icon: 'none',
+          title: '已经是第一页啦',
+        })
+        return;
       }
       that.setData({
         skip
@@ -167,80 +218,82 @@ Page({
     wx.showLoading({
       title: '加载中...',
     })
+    let _url = `${this.data.appUrl}/v1/vertical/category/${whitch.id}/vertical?limit=${limitNum}&order=${order}&skip=${skip}`;
+    console.log(_url)
     wx.request({
-      url: `${this.data.appUrl}/v1/vertical/category/${whitch.id}/vertical?limit=10&order=${order}&skip=${skip}`,
+      url: _url,
       success(res) {
         wx.hideLoading();
+        console.log('点击左右后数据：', res.data.res.vertical)
         that.setData({
           imgClass: res.data.res.vertical,
           textId: whitch.num,
-          countNum: 10
+          limitNum: 45
         });
       }
     });
     that.goTop();
   },
 
-  // 获取更多
-  loadMore(whitch) {
-    let countNum = this.data.countNum;
-    let limitNum = this.data.limitNum;
+  // 失去焦点的时候
+  bindBlur(e) {
+    let num = e.detail.value;
+    let skipNumSkip = this.data.skipNumSkip;
+    let appUrl = this.data.appUrl;
     let that = this;
     let order = this.data.order;
-    let skip = this.data.skip;
-    // 假设每页壁纸最多 40 张
-    if (countNum < limitNum) { // 当前数量 < 总数量
-      that.setData({
-        hasMore: true
+    let limitNum = this.data.limitNum;
+    let skip = num * limitNum;
+    console.log(num, skip)
+    if(num < 0) {
+      wx.showToast({
+        icon: 'none',
+        title: '已经是第一页啦~',
       })
-      countNum += 10;
+    } else if (num > skipNumSkip) {
+      wx.showToast({
+        icon: 'none',
+        title: '超过最大页码啦~',
+      })
     } else {
-      that.setData({
-        hasMore: false
-      })
+      wx.showLoading({
+        title: '加载中...',
+      });
+      // 初始化时获取id、num、title
+      let _url = `${appUrl}/v1/vertical/category/${whitch.id}/vertical?limit=${limitNum}&order=${order}&skip=${skip}`;
+      wx.request({
+        url: _url,
+        success(res) {
+          wx.hideLoading();
+          that.setData({
+            imgClass: res.data.res.vertical,
+            skip
+          });
+        }
+      });
+      that.goTop();
     }
-    wx.showLoading({
-      title: '加载中...',
-    });
-    wx.request({
-      url: `${this.data.appUrl}/v1/vertical/category/${whitch.id}/vertical?limit=${countNum}&order=${order}&skip=${skip}`,
-      success(res) {
-        wx.hideLoading();
-        that.setData({
-          imgClass: res.data.res.vertical,
-        });
-      }
-    });
-    that.setData({
-      textId: whitch.num,
-      countNum
-    });
-    wx.setNavigationBarTitle({
-      title: whitch.name
-    });
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function(e) {
-    this.getPic(whitch);
-    this.setData({
-      hasMore: true
-    })
+
   },
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom(e) {
-    this.loadMore(whitch);
+
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function() {
-    this.getPic(whitch);
+    let order = this.data.order;
+    this.getPic(whitch, order);
   },
 
   /**
@@ -255,7 +308,7 @@ Page({
   onHide: function() {
 
   },
-  
+
   /**
    * 生命周期函数--监听页面卸载
    */
